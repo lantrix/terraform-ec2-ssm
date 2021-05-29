@@ -64,16 +64,3 @@ resource "aws_security_group" "techdebug-ec2-sg" {
      Name = "techdebug-ec2-sg"
    }
 }
-resource "aws_vpc_endpoint" "ssm" {
-  vpc_id            = aws_vpc.techdebug-vpc.id
-  service_name      = "com.amazonaws.${var.region}.ssm"
-  vpc_endpoint_type = "Interface"
-  subnet_ids        = [
-    aws_subnet.techdebug-public-subnet-1.id,
-    aws_subnet.techdebug-public-subnet-2.id
-  ]
-  security_group_ids = [
-    aws_security_group.techdebug-ec2-sg.id,
-  ]
-  private_dns_enabled = true
-}

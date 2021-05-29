@@ -36,11 +36,12 @@ resource "aws_iam_policy_attachment" "techdebug_attach1" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
 resource "aws_instance" "ec2-workstation" {
-    ami = "ami-03d56f451ca110e99"
+    ami = "ami-03d56f451ca110e99" #CentOS7 in ap-southeast-2
     instance_type = "t3.medium"
     subnet_id = "${module.vpc.vpc_public_subnet1}"
     vpc_security_group_ids = [module.vpc.vpc_security_group_id]
     monitoring = "true"
+    associate_public_ip_address = "true"
     iam_instance_profile = "${aws_iam_instance_profile.techdebug_profile.id}"
     user_data = "${file("${path.module}/install-ssm.sh")}"
     tags = {
