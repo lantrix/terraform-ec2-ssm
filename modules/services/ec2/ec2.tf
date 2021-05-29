@@ -1,5 +1,7 @@
+variable "region" {}
 module "vpc" {
   source  = "../vpc"
+  region  = var.region
 }
 
 resource "aws_iam_role" "workstation_role" {
