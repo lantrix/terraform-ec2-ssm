@@ -33,11 +33,6 @@ resource "aws_iam_policy_attachment" "techdebug_attach1" {
   roles      = [aws_iam_role.workstation_role.id]
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
-resource "aws_iam_policy_attachment" "techdebug_attach2" {
-  name       = "techdebug-policy-attachment"
-  roles      = [aws_iam_role.workstation_role.id]
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM"
-}
 resource "aws_instance" "ec2-workstation" {
     ami = "ami-03d56f451ca110e99"
     instance_type = "t3.medium"
