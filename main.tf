@@ -3,6 +3,6 @@ provider "aws" {
   region = "ap-southeast-2"
 }
 
-module "vpc" {
-  source  = "./modules/services/vpc"
+module "ec2" {
+  source  = "./modules/services/ec2"
 }
