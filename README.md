@@ -21,5 +21,6 @@ Start the session using the output `instance_id`
 
 ```
 aws ssm start-session \
-    --target i-05d632b512e597f01
+    --document-name ec2-workstation \
+    --target i-053cc3cc379ef0069
 ```

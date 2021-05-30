@@ -1,4 +1,17 @@
 variable "region" {}
+# Get latest Amazon Linux 2 AMI
+data "aws_ami" "amazon-linux-2" {
+  owners      = ["amazon"]
+  most_recent = true
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-*"]
+  }
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+}
 module "vpc" {
   source  = "../vpc"
   region  = var.region
@@ -36,7 +49,7 @@ resource "aws_iam_policy_attachment" "techdebug_attach1" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
 resource "aws_instance" "ec2-workstation" {
-    ami = "ami-03d56f451ca110e99" #CentOS7 in ap-southeast-2
+    ami = "${data.aws_ami.amazon-linux-2.id}"
     instance_type = "t3.medium"
     subnet_id = "${module.vpc.vpc_public_subnet1}"
     vpc_security_group_ids = [module.vpc.vpc_security_group_id]
@@ -47,4 +60,37 @@ resource "aws_instance" "ec2-workstation" {
     tags = {
         Name = "ec2-workstation"
     }
+}
+resource "aws_ssm_document" "ec2-workstation" {
+  name          = "ec2-workstation"
+  document_type = "Session"
+
+  content = <<DOC
+  {
+    "schemaVersion": "1.0",
+    "description": "Parameterized document for SSM Session Manager",
+    "sessionType": "Standard_Stream",
+    "parameters": {
+      "linuxcmd": {
+        "type": "String",
+        "default": "bash",
+        "description": "The command to run on connection."
+      }
+    },
+    "inputs": {
+      "s3BucketName": "",
+      "s3KeyPrefix": "",
+      "s3EncryptionEnabled": false,
+      "cloudWatchLogGroupName": "",
+      "cloudWatchEncryptionEnabled": false,
+      "kmsKeyId": "",
+      "runAsEnabled": true,
+      "runAsDefaultUser": "ec2-user",
+      "shellProfile": {
+        "windows": "",
+        "linux": "{{ linuxcmd }}"
+      }
+    }
+  }
+DOC
 }
