@@ -56,7 +56,7 @@ resource "aws_instance" "ec2-workstation" {
     monitoring = "true"
     associate_public_ip_address = "true"
     iam_instance_profile = "${aws_iam_instance_profile.techdebug_profile.id}"
-    user_data = "${file("${path.module}/install-ssm.sh")}"
+    user_data = "${file("${path.module}/bootstrap.sh")}"
     tags = {
         Name = "ec2-workstation"
     }
@@ -73,7 +73,7 @@ resource "aws_ssm_document" "ec2-workstation" {
     "parameters": {
       "linuxcmd": {
         "type": "String",
-        "default": "bash",
+        "default": "bash -l",
         "description": "The command to run on connection."
       }
     },
