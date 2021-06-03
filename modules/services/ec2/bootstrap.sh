@@ -13,3 +13,6 @@ su - ec2-user -c "homesick link dotfiles-vim --force"
 su - ec2-user -c "vim +PluginInstall +qall 1>/dev/null"
 su - ec2-user -c "curl -O https://bootstrap.pypa.io/get-pip.py && python3 get-pip.py --user && rm ~/get-pip.py"
 su - ec2-user -c "pip install --user powerline-status"
+# Golang
+su - ec2-user -c "curl -LO https://golang.org/dl/go1.16.4.linux-amd64.tar.gz && sudo tar -C /usr/local -xzf go1.16.4.linux-amd64.tar.gz && rm ~/go1.16.4.linux-amd64.tar.gz && mkdir -p ~/go/{src,bin}"
+su - ec2-user -c "vim +GoInstallBinaries +qall 1>/dev/null"
