@@ -3,8 +3,30 @@
 Sets up an EC2 workstation with CentOS 7 (x86_64) in `ap-southeast-2`
 ## Setup
 
+### Remote State
+
+Ensure using [S3 remote state](https://github.com/lantrix/terraform-remote-state-s3)
+
+```shell
+export accountId=$(aws sts get-caller-identity --query Account --output text)
+terraform init \
+    -backend-config=region=ap-southeast-2 \
+    -backend-config=bucket=terraform-state-${accountId} \
+    -backend-config=key=terraform.tfstate \
+    -backend-config=dynamodb_table=terraform-state
 ```
+
+### Local State
+
+If you don't want to sync your state remotely just:
+
+```shell
 terraform init
+```
+
+### Deploy
+
+```shell
 terraform plan
 terraform apply
 ```
