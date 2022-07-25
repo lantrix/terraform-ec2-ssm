@@ -10,10 +10,10 @@ Ensure using [S3 remote state](https://github.com/lantrix/terraform-remote-state
 ```shell
 export accountId=$(aws sts get-caller-identity --query Account --output text)
 terraform init \
-    -backend-config=region=ap-southeast-2 \
-    -backend-config=bucket=terraform-state-${accountId} \
-    -backend-config=key=terraform.tfstate \
-    -backend-config=dynamodb_table=terraform-state
+    -backend-config="region=ap-southeast-2" \
+    -backend-config="bucket=terraform-state-${accountId}" \
+    -backend-config="key=terraform.tfstate" \
+    -backend-config="dynamodb_table=terraform-state"
 ```
 
 ### Local State
