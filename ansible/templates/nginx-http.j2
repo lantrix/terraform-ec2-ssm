@@ -1,8 +1,5 @@
 server_tokens off;
 
-proxy_cache_path /tmp/pleroma-media-cache levels=1:2 keys_zone=pleroma_media_cache:10m max_size=10g
-                 inactive=720m use_temp_path=off;
-
 server {
     listen 80 default_server;
     server_name {{ domain_name }};
