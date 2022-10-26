@@ -1,0 +1,21 @@
+---
+- name: Start BE & Install FE
+  hosts: all
+  become: true
+  gather_facts: yes
+
+  # pre_tasks:
+  #   - raw: apt-get install -y python3-simplejson
+
+  tasks:
+    - name: Enable Soapbox service
+      systemd:
+        name: pleroma.service
+        enabled: yes
+        state: started
+
+    - name: Download Soapbox
+      unarchive:
+        src: https://gitlab.com/soapbox-pub/soapbox/-/jobs/artifacts/develop/download?job=build-production
+        dest: /opt/pleroma/instance
+        remote_src: yes

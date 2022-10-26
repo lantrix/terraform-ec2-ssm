@@ -114,3 +114,9 @@ ansible-playbook -i ec2-inventory.yml rebased-db.yml
 ```shell
 ansible-playbook -i ec2-inventory.yml rebased-nginx.yml
 ```
+
+## Setup Frontend
+
+```shell
+ansible-playbook -i ec2-inventory.yml soapbox.yml
+```

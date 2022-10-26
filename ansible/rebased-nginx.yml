@@ -4,8 +4,8 @@
   become: true
   gather_facts: no
 
-  pre_tasks:
-    - raw: apt-get install -y python3-simplejson
+  # pre_tasks:
+  #   - raw: apt-get install -y python3-simplejson
 
   tasks:
     - name: install certbot
@@ -56,10 +56,4 @@
       cron:
         name: letsencrypt_renewal
         special_time: weekly
-        job: letsencrypt --renew certonly -n --webroot -w /var/www/letsencrypt -m {{ letsencrypt_email }} --agree-tos -d {{ domain_name }} && service nginx reload
-
-    - name: Enable Soapbox service
-      systemd:
-        name: pleroma.service
-        enabled: yes
-        state: started
+        job: certbot --renew certonly -n --webroot -w /var/www/letsencrypt --email {{ letsencrypt_email }} --agree-tos -d {{ domain_name }} && systemctl reload nginx
