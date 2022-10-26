@@ -21,14 +21,14 @@
     become: yes
     become_user: pleroma
     lineinfile:
-      path: ~/.profile
+      path: ~/.bashrc
       line: '. $HOME/.asdf/asdf.sh'
 
   - name: Setup ASDF completion
     become: yes
     become_user: pleroma
     lineinfile:
-      path: ~/.profile
+      path: ~/.bashrc
       line: '. $HOME/.asdf/completions/asdf.bash'
 
   - name: Install Hex
@@ -67,41 +67,9 @@
     args:
       chdir: /opt/pleroma
 
-  - name: Copy Server Config
-    copy:
-      src: prod.secret.exs
-      dest: /opt/pleroma/config/prod.secret.exs
-      owner: pleroma
-      group: pleroma
-      mode: '0600'
-
-  - name: Setup Database
-    become: yes
-    become_user: postgres
-    shell: psql -f config/setup_db.psql
-    changed_when: >
-      "Will always run, don't show that it changed" == 1
-    args:
-      chdir: /opt/pleroma
-
-  - name: Database Migration
-    become: yes
-    become_user: pleroma
-    shell: bash -ilc 'MIX_ENV=prod mix ecto.migrate'
-    changed_when: >
-      "Will always run, don't show that it changed" == 1
-    args:
-      chdir: /opt/pleroma
-
   - name: Copy Soapbox Service config
     copy:
       src: /opt/pleroma/installation/pleroma.service
       dest: /etc/systemd/system/pleroma.service
       mode: preserve
       remote_src: yes
-
-- name: Enable Soapbox service
-  systemd:
-    name: pleroma.service
-    enabled: yes
-    state: started

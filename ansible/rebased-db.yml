@@ -1,0 +1,23 @@
+---
+- name: Soapbox Secrets
+  hosts: all
+  gather_facts: true
+
+  tasks:
+  - name: Setup Database
+    become: yes
+    become_user: postgres
+    shell: psql -f config/setup_db.psql
+    changed_when: >
+      "Will always run, don't show that it changed" == 1
+    args:
+      chdir: /opt/pleroma
+
+  - name: Database Migration
+    become: yes
+    become_user: pleroma
+    shell: bash -ilc 'MIX_ENV=prod mix ecto.migrate'
+    changed_when: >
+      "Will always run, don't show that it changed" == 1
+    args:
+      chdir: /opt/pleroma

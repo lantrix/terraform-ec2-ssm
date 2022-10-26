@@ -44,7 +44,67 @@ Each time a new session is required, both of the two steps `send-ssh-public-key`
 
 ```shell
 ansible all -i ec2-inventory.yml -m ping
+```
+
+## Update Ansible role
+
+Optional as it's committed to the repo:
+
+```shell
 ansible-galaxy install --roles-path ./roles/ -r requirements.yml
+```
+
+## Setup Server for rebased
+
+```shell
 ansible-playbook -i ec2-inventory.yml rebased-setup.yml
+```
+
+## Configure Server for rebased
+
+```shell
 ansible-playbook -i ec2-inventory.yml rebased-configure.yml
+```
+
+## Server secrets & instance config
+
+There is an example in `prod.secret.exs.example.j2`. If you populate this as `prod.secret.exs.j2` this playbook will upload it.
+
+If you want to generate new ones skip the playbook here
+
+### Upload your secrets/config
+
+```shell
+ansible-playbook -i ec2-inventory.yml rebased-secrets.yml
+```
+
+### Create new secrets/config
+
+If you want to generate new server secrets, generate a new instance config as follows:
+
+Enter the source code directory, and become the pleroma user:
+
+```shell
+cd /opt/pleroma
+sudo -Hu pleroma bash
+```
+
+Generate new config & secrets:
+
+```shell
+MIX_ENV=prod mix pleroma.instance gen
+```
+
+If you’re happy with it, rename the generated file so it gets loaded at runtime:
+
+```shell
+mv config/generated_config.exs config/prod.secret.exs
+```
+
+This step also generated database config for next step.
+
+## Setup Database
+
+```shell
+ansible-playbook -i ec2-inventory.yml rebased-db.yml
 ```
