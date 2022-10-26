@@ -11,8 +11,9 @@ Ensure using [S3 remote state](https://github.com/lantrix/terraform-remote-state
 export accountId=$(aws sts get-caller-identity --query Account --output text)
 terraform init \
     -backend-config="region=ap-southeast-2" \
+    -backend-config="workspace_key_prefix=ec2-soapbox" \
     -backend-config="bucket=terraform-state-${accountId}" \
-    -backend-config="key=terraform.tfstate" \
+    -backend-config="key=soapbox-terraform.tfstate" \
     -backend-config="dynamodb_table=terraform-state"
 ```
 
@@ -43,6 +44,6 @@ Start the session using the output `instance_id`
 
 ```
 aws ssm start-session \
-    --document-name ec2-workstation \
+    --document-name soapbox-demo \
     --target i-053cc3cc379ef0069
 ```

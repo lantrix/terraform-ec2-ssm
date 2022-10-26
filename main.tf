@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    workspace_key_prefix = "ec2-ssm"
+    workspace_key_prefix = "ec2-soapbox"
   }
 }
 

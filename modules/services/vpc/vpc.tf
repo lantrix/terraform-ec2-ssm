@@ -1,59 +1,83 @@
 variable "region" {}
-resource "aws_vpc" "techdebug-vpc" {
+data "http" "myip" {
+  url = "http://ipv4.icanhazip.com"
+}
+resource "aws_vpc" "soapbox-vpc" {
    cidr_block = "192.168.0.0/16"
    instance_tenancy = "default"
    enable_dns_support = "true"
    enable_dns_hostnames = "true"
    tags = {
-     Name = "techdebug-vpc"
+     Name = "soapbox-vpc"
    }
 }
-resource "aws_subnet" "techdebug-public-subnet-1" {
-   vpc_id = "${aws_vpc.techdebug-vpc.id}"
+resource "aws_subnet" "soapbox-public-subnet-1" {
+   vpc_id = "${aws_vpc.soapbox-vpc.id}"
    cidr_block = "192.168.1.0/24"
    map_public_ip_on_launch = "false"
    availability_zone = "${var.region}a"
    tags = {
-     Name = "techdebug-public-subnet-1"
+     Name = "soapbox-public-subnet-1"
    }
 }
-resource "aws_subnet" "techdebug-public-subnet-2" {
-   vpc_id = "${aws_vpc.techdebug-vpc.id}"
+resource "aws_subnet" "soapbox-public-subnet-2" {
+   vpc_id = "${aws_vpc.soapbox-vpc.id}"
    cidr_block = "192.168.2.0/24"
    map_public_ip_on_launch = "false"
    availability_zone = "${var.region}b"
    tags = {
-     Name = "techdebug-public-subnet-2"
+     Name = "soapbox-public-subnet-2"
    }
 }
-resource "aws_internet_gateway" "techdebug-internetgateway" {
-   vpc_id = "${aws_vpc.techdebug-vpc.id}"
+resource "aws_internet_gateway" "soapbox-internetgateway" {
+   vpc_id = "${aws_vpc.soapbox-vpc.id}"
    tags = {
-     Name = "techdebug-internetgateway"
+     Name = "soapbox-internetgateway"
    }
 }
-resource "aws_route_table" "techdebug-public-routetable" {
-   vpc_id = "${aws_vpc.techdebug-vpc.id}"
+resource "aws_route_table" "soapbox-public-routetable" {
+   vpc_id = "${aws_vpc.soapbox-vpc.id}"
    route {
      cidr_block = "0.0.0.0/0"
-     gateway_id = "${aws_internet_gateway.techdebug-internetgateway.id}"
+     gateway_id = "${aws_internet_gateway.soapbox-internetgateway.id}"
    }
    tags = {
-     Name = "techdebug-public-routetable"
+     Name = "soapbox-public-routetable"
    }
 }
-resource "aws_route_table_association" "techdebug-public-1" {
-   subnet_id = "${aws_subnet.techdebug-public-subnet-1.id}"
-   route_table_id = "${aws_route_table.techdebug-public-routetable.id}"
+resource "aws_route_table_association" "soapbox-public-1" {
+   subnet_id = "${aws_subnet.soapbox-public-subnet-1.id}"
+   route_table_id = "${aws_route_table.soapbox-public-routetable.id}"
 }
-resource "aws_route_table_association" "techdebug-public-2" {
-   subnet_id = "${aws_subnet.techdebug-public-subnet-2.id}"
-   route_table_id = "${aws_route_table.techdebug-public-routetable.id}"
+resource "aws_route_table_association" "soapbox-public-2" {
+   subnet_id = "${aws_subnet.soapbox-public-subnet-2.id}"
+   route_table_id = "${aws_route_table.soapbox-public-routetable.id}"
 }
-resource "aws_security_group" "techdebug-ec2-sg" {
-  name        = "techdebug-ec2-sg"
-  description = "Allow no traffic in"
-  vpc_id = "${aws_vpc.techdebug-vpc.id}"
+resource "aws_security_group" "soapbox-ec2-sg" {
+  name        = "soapbox-ec2-sg"
+  description = "Allow only ansible traffic in"
+  vpc_id = "${aws_vpc.soapbox-vpc.id}"
+  ingress {
+    description      = "SSH from local"
+    from_port        = 22
+    to_port          = 22
+    protocol         = "tcp"
+    cidr_blocks      = ["${chomp(data.http.myip.response_body)}/32"]
+  }
+  ingress {
+    description      = "HTTP from local"
+    from_port        = 80
+    to_port          = 80
+    protocol         = "tcp"
+    cidr_blocks      = ["${chomp(data.http.myip.response_body)}/32"]
+  }
+  ingress {
+    description      = "HTTPS from local"
+    from_port        = 443
+    to_port          = 443
+    protocol         = "tcp"
+    cidr_blocks      = ["${chomp(data.http.myip.response_body)}/32"]
+  }
   egress {
     from_port   = 0
     to_port     = 0
@@ -61,6 +85,6 @@ resource "aws_security_group" "techdebug-ec2-sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   tags = {
-     Name = "techdebug-ec2-sg"
+     Name = "soapbox-ec2-sg"
    }
 }

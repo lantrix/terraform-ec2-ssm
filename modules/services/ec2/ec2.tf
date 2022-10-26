@@ -1,11 +1,12 @@
 variable "region" {}
 # Get latest Amazon Linux 2 AMI
-data "aws_ami" "amazon-linux-2" {
-  owners      = ["amazon"]
+data "aws_ami" "ubuntu-jammy64" {
+  owners      = ["099720109477"]
   most_recent = true
   filter {
     name   = "name"
-    values = ["amzn2-ami-*"]
+    # values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-arm64-server-*"]
   }
   filter {
     name   = "virtualization-type"
@@ -18,7 +19,7 @@ module "vpc" {
 }
 
 resource "aws_iam_role" "workstation_role" {
-  name = "ec2-workstation"
+  name = "soapbox-demo"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -36,33 +37,33 @@ resource "aws_iam_role" "workstation_role" {
 EOF
 
   tags = {
-    Name = "ec2-workstation"
+    Name = "soapbox-demo"
   }
 }
-resource "aws_iam_instance_profile" "techdebug_profile" {
-  name = "ec2-workstation"
+resource "aws_iam_instance_profile" "soapbox_profile" {
+  name = "soapbox-demo"
   role = "${aws_iam_role.workstation_role.id}"
 }
-resource "aws_iam_policy_attachment" "techdebug_attach1" {
-  name       = "techdebug-policy-attachment"
+resource "aws_iam_policy_attachment" "soapbox_attach1" {
+  name       = "soapbox-policy-attachment"
   roles      = [aws_iam_role.workstation_role.id]
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
-resource "aws_instance" "ec2-workstation" {
-    ami = "${data.aws_ami.amazon-linux-2.id}"
-    instance_type = "t3.medium"
+resource "aws_instance" "soapbox-demo" {
+    ami = "${data.aws_ami.ubuntu-jammy64.id}"
+    instance_type = "m6g.large"
     subnet_id = "${module.vpc.vpc_public_subnet1}"
     vpc_security_group_ids = [module.vpc.vpc_security_group_id]
     monitoring = "true"
     associate_public_ip_address = "true"
-    iam_instance_profile = "${aws_iam_instance_profile.techdebug_profile.id}"
+    iam_instance_profile = "${aws_iam_instance_profile.soapbox_profile.id}"
     user_data = "${file("${path.module}/bootstrap.sh")}"
     tags = {
-        Name = "ec2-workstation"
+        Name = "soapbox-demo"
     }
 }
-resource "aws_ssm_document" "ec2-workstation" {
-  name          = "ec2-workstation"
+resource "aws_ssm_document" "soapbox-demo" {
+  name          = "soapbox-demo"
   document_type = "Session"
 
   content = <<DOC
@@ -85,7 +86,7 @@ resource "aws_ssm_document" "ec2-workstation" {
       "cloudWatchEncryptionEnabled": false,
       "kmsKeyId": "",
       "runAsEnabled": true,
-      "runAsDefaultUser": "ec2-user",
+      "runAsDefaultUser": "ssm-user",
       "shellProfile": {
         "windows": "",
         "linux": "{{ linuxcmd }}"
