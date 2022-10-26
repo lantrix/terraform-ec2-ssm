@@ -1,0 +1,3 @@
+- src: https://github.com/cimon-io/ansible-role-asdf
+  version: master
+  name: ansible-role-asdf

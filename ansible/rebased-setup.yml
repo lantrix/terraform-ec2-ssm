@@ -1,0 +1,82 @@
+---
+- name: Soapbox Setup
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: Update and upgrade apt packages
+    apt:
+      upgrade: yes
+      update_cache: yes
+      cache_valid_time: 86400 #One day
+
+  - name: Prepare for Ansible
+    apt:
+      name: software-properties-common
+
+  - name: Add specified repository into sources list
+    apt_repository:
+      repo: ppa:ansible/ansible
+      state: present
+
+  - name: Install My tools
+    apt:
+      state: present
+      name:
+        - git
+        - jq
+        - gpgv2
+        - vim
+        - acl
+        - fail2ban
+
+  - name: Install Soapbox Dependencies
+    apt:
+      state: present
+      name:
+        - git
+        - curl
+        - build-essential
+        - postgresql
+        - postgresql-contrib
+        - cmake
+        - libmagic-dev
+        - imagemagick
+        - ffmpeg
+        - libimage-exiftool-perl
+        - nginx
+        - certbot
+        - unzip
+        - libssl-dev
+        - automake
+        - autoconf
+        - libncurses5-dev
+
+  - name: Add the Pleroma user
+    user:
+      name: pleroma
+      system: yes
+      shell: /bin/false
+      createhome: yes
+      home: /var/lib/pleroma
+
+  - name: Download Rebased
+    git:
+      repo: https://gitlab.com/soapbox-pub/rebased
+      dest: /tmp/pleroma
+      single_branch: yes
+      version: develop
+
+  - name: Copy Rebased to destination
+    copy:
+      src: /tmp/pleroma
+      dest: /opt/
+      mode: preserve
+      remote_src: yes
+
+  - name: Set Rebased permissions
+    file:
+      path: /opt/pleroma
+      owner: pleroma
+      group: pleroma
+      recurse: yes
