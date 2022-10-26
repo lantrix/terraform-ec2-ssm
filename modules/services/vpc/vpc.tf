@@ -65,18 +65,18 @@ resource "aws_security_group" "soapbox-ec2-sg" {
     cidr_blocks      = ["${chomp(data.http.myip.response_body)}/32"]
   }
   ingress {
-    description      = "HTTP from local"
+    description      = "HTTP"
     from_port        = 80
     to_port          = 80
     protocol         = "tcp"
-    cidr_blocks      = ["${chomp(data.http.myip.response_body)}/32"]
+    cidr_blocks      = ["0.0.0.0/0"]
   }
   ingress {
-    description      = "HTTPS from local"
+    description      = "HTTPS"
     from_port        = 443
     to_port          = 443
     protocol         = "tcp"
-    cidr_blocks      = ["${chomp(data.http.myip.response_body)}/32"]
+    cidr_blocks      = ["0.0.0.0/0"]
   }
   egress {
     from_port   = 0
