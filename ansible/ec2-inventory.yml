@@ -1,9 +1,12 @@
 soapbox:
   hosts:
     ec2-soapbox:
-      ansible_host: i-03f6eebca1b618594
+      ansible_host: i-07e11451fed53c628 #Set this to your instance after terraform
+      domain_name: yourdomain.com
+      site_name: Your Site Name
+      letsencrypt_email: you@yourdomain.com
   vars:
     ansible_ssh_common_args: -o StrictHostKeyChecking=no -o ProxyCommand="sh -c \"aws ssm start-session --target %h --document-name AWS-StartSSHSession --parameters 'portNumber=%p'\""
     ansible_user: 'ssm-user'
     ansible_become: true
-    ansible_ssh_private_key_file: '~/.ssh/i-03f6eebca1b618594'
+    ansible_ssh_private_key_file: '~/.ssh/i-07e11451fed53c628' #Set this to your instance after terraform

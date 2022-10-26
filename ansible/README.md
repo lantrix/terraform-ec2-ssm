@@ -108,3 +108,9 @@ This step also generated database config for next step.
 ```shell
 ansible-playbook -i ec2-inventory.yml rebased-db.yml
 ```
+
+## Setup Nginx & SSL
+
+```shell
+ansible-playbook -i ec2-inventory.yml rebased-nginx.yml
+```
