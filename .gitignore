@@ -33,4 +33,6 @@ override.tf.json
 .terraform
 
 #Soapbox
+prod.secret.exs.j2
 prod.secret.exs
+setup_db.psql
