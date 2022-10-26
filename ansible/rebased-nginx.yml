@@ -30,7 +30,7 @@
     - name: Reload nginx to activate letsencrypt site
       systemd:
         name: nginx
-      state: started
+        state: restarted
 
     - name: Create letsencrypt certificate
       shell: certbot certonly -n --webroot -w /var/www/letsencrypt --email {{ letsencrypt_email }} --agree-tos -d {{ domain_name }}
@@ -50,7 +50,7 @@
     - name: Reload nginx to activate specified site
       systemd:
         name: nginx
-      state: restarted
+        state: restarted
 
     - name: Add letsencrypt cronjob for cert renewal
       cron:
