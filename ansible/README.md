@@ -2,11 +2,13 @@
 
 Based upon https://luktom.net/en/e1693-ansible-over-aws-systems-manager-sessions-a-perfect-solution-for-high-security-environments
 
-## Install Ansible community modules
 
-```shell
-ansible-galaxy collection install community.general
-ansible-galaxy collection install community.postgresql
+### Ansible setup
+
+If running locally install roles and collections.
+
+```
+ansible-galaxy install -r requirements.yml
 ```
 
 ## Populate Secrets

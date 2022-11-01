@@ -1,7 +1,12 @@
-- src: https://github.com/cimon-io/ansible-role-asdf
-  version: master
-  name: ansible-role-asdf
+roles:
+  - name: cimon-io.asdf
 
-- src: https://github.com/geerlingguy/ansible-role-postgresql
-  version: master
-  name: geerlingguy.postgresql
+  - name: geerlingguy.postgresql
+    src: https://github.com/lantrix/ansible-role-postgresql
+    version: custom-data-dir
+collections:
+  # Install a collection from Ansible Galaxy.
+  - name: community.general
+    source: https://galaxy.ansible.com
+  - name: community.postgresql
+    source: https://galaxy.ansible.com
