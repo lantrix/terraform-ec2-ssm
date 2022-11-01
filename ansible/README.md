@@ -59,14 +59,6 @@ Each time a new session is required, both of the two steps `send-ssh-public-key`
 ansible all -i ec2-inventory.yml -m ping
 ```
 
-## Update Ansible role
-
-Optional as it's committed to the repo:
-
-```shell
-ansible-galaxy install --roles-path ./roles/ -r requirements.yml
-```
-
 ## Setup Server for Soapbox BE
 
 ```shell
