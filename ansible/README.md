@@ -68,8 +68,6 @@ ansible-playbook -i ec2-inventory.yml soapbox-be-configure.yml
 
 ## Server secrets & instance config
 
-There is an example in `prod.secret.exs.example.j2`. If you populate this as `prod.secret.exs.j2` this playbook will upload it.
-
 If you want to generate new ones skip the playbook here
 
 ### Upload your secrets/config
