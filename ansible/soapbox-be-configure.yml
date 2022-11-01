@@ -1,5 +1,5 @@
 ---
-- name: Soapbox Configure
+- name: Soapbox Backend Configure
   hosts: all
   gather_facts: true
   vars:

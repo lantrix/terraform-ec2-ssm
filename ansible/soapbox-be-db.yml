@@ -1,10 +1,10 @@
 ---
-- name: Soapbox Secrets
+- name: Soapbox Backend Database config
   hosts: all
   gather_facts: true
 
   tasks:
-  - name: Setup Database
+  - name: Configure Database
     become: yes
     become_user: postgres
     shell: psql -f config/setup_db.psql

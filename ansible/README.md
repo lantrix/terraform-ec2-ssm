@@ -2,6 +2,13 @@
 
 Based upon https://luktom.net/en/e1693-ansible-over-aws-systems-manager-sessions-a-perfect-solution-for-high-security-environments
 
+## Install Ansible community modules
+
+```shell
+ansible-galaxy collection install community.general
+ansible-galaxy collection install community.postgresql
+```
+
 ## Setup
 
 Setup SSH for the tunnel over SSM for ansible.
@@ -54,13 +61,19 @@ Optional as it's committed to the repo:
 ansible-galaxy install --roles-path ./roles/ -r requirements.yml
 ```
 
-## Setup Server for rebased
+## Setup Server for Soapbox BE
 
 ```shell
 ansible-playbook -i ec2-inventory.yml soapbox-be-setup.yml
 ```
 
-## Configure Server for rebased
+## Setup PostgreSQL Server for Soapbox BE
+
+```shell
+ansible-playbook -i ec2-inventory.yml soapbox-be-database.yml
+```
+
+## Configure Server for Soapbox BE
 
 ```shell
 ansible-playbook -i ec2-inventory.yml soapbox-be-configure.yml

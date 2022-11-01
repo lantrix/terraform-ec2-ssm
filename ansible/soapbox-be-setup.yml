@@ -1,5 +1,5 @@
 ---
-- name: Soapbox Setup
+- name: Soapbox Backend Server Setup
   hosts: all
   become: yes
 

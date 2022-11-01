@@ -1,0 +1,8 @@
+postgresql_databases:
+  - name: pleroma
+    owner: pleroma
+postgresql_users:
+  - name: pleroma
+    password: "{{ db_password }}"
+    encrypted: true
+postgresql_data_dir: "/data/pgsql/{{ postgresql_version }}/data"
