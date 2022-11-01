@@ -4,6 +4,7 @@ roles:
   - name: geerlingguy.postgresql
     src: https://github.com/lantrix/ansible-role-postgresql
     version: custom-data-dir
+
 collections:
   # Install a collection from Ansible Galaxy.
   - name: community.general

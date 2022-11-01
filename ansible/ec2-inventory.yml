@@ -4,7 +4,7 @@ soapbox:
       ansible_host: i-07e11451fed53c628 #Set this to your instance after terraform
       domain_name: yourdomain.com
       site_name: Your Site Name
-      letsencrypt_email: you@yourdomain.com
+      admin_email: you@yourdomain.com
       pleroma_secret_key_base:
       pleroma_live_signing_salt:
       pleroma_signing_salt:
