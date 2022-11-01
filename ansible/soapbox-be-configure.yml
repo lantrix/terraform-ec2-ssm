@@ -7,7 +7,7 @@
     asdf_group: pleroma
 
   roles:
-  - role: ansible-role-asdf
+  - role: cimon-io.asdf
     asdf_plugins:
     - name: "erlang"
       versions: ["24.3.4.2"]
