@@ -9,6 +9,10 @@ ansible-galaxy collection install community.general
 ansible-galaxy collection install community.postgresql
 ```
 
+## Populate Secrets
+
+Ensure the `ec2-inventory.yml` has the secrets populated.
+
 ## Setup
 
 Setup SSH for the tunnel over SSM for ansible.
