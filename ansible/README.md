@@ -57,13 +57,13 @@ ansible-galaxy install --roles-path ./roles/ -r requirements.yml
 ## Setup Server for rebased
 
 ```shell
-ansible-playbook -i ec2-inventory.yml rebased-setup.yml
+ansible-playbook -i ec2-inventory.yml soapbox-be-setup.yml
 ```
 
 ## Configure Server for rebased
 
 ```shell
-ansible-playbook -i ec2-inventory.yml rebased-configure.yml
+ansible-playbook -i ec2-inventory.yml soapbox-be-configure.yml
 ```
 
 ## Server secrets & instance config
@@ -75,7 +75,7 @@ If you want to generate new ones skip the playbook here
 ### Upload your secrets/config
 
 ```shell
-ansible-playbook -i ec2-inventory.yml rebased-secrets.yml
+ansible-playbook -i ec2-inventory.yml soapbox-be-secrets.yml
 ```
 
 ### Create new secrets/config
@@ -106,13 +106,13 @@ This step also generated database config for next step.
 ## Setup Database
 
 ```shell
-ansible-playbook -i ec2-inventory.yml rebased-db.yml
+ansible-playbook -i ec2-inventory.yml soapbox-be-db.yml
 ```
 
 ## Setup Nginx & SSL
 
 ```shell
-ansible-playbook -i ec2-inventory.yml rebased-nginx.yml
+ansible-playbook -i ec2-inventory.yml soapbox-be-nginx.yml
 ```
 
 ## Setup Frontend

@@ -38,8 +38,6 @@
         - git
         - curl
         - build-essential
-        - postgresql
-        - postgresql-contrib
         - cmake
         - libmagic-dev
         - imagemagick

@@ -5,6 +5,13 @@ soapbox:
       domain_name: yourdomain.com
       site_name: Your Site Name
       letsencrypt_email: you@yourdomain.com
+      pleroma_secret_key_base:
+      pleroma_live_signing_salt:
+      pleroma_signing_salt:
+      db_password:
+      push_public_key:
+      push_private_key:
+      joken_default_signer:
   vars:
     ansible_ssh_common_args: -o StrictHostKeyChecking=no -o ProxyCommand="sh -c \"aws ssm start-session --target %h --document-name AWS-StartSSHSession --parameters 'portNumber=%p'\""
     ansible_user: 'ssm-user'
