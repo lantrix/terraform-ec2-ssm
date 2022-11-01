@@ -31,6 +31,12 @@
         - fail2ban
         - python3-simplejson
 
+  - name: Enable Fail2ban
+    systemd:
+      name: fail2ban.service
+      enabled: yes
+      state: started
+
   - name: Install Soapbox Dependencies
     apt:
       state: present
