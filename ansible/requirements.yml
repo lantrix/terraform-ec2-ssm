@@ -1,3 +1,7 @@
 - src: https://github.com/cimon-io/ansible-role-asdf
   version: master
   name: ansible-role-asdf
+
+- src: https://github.com/geerlingguy/ansible-role-postgresql
+  version: master
+  name: geerlingguy.postgresql
